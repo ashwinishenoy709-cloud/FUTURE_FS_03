@@ -1,18 +1,13 @@
-// Mobile sidebar menu: open/close via toggle, close button, overlay click, or Escape
-  const menuToggle = document.getElementById('menu-toggle');
-  const menuClose = document.getElementById('menu-close');
-  const mobileMenu = document.getElementById('mobile-menu');
-  const menuOverlay = document.getElementById('menu-overlay');
+ // ===================== FULL MENU MODAL =====================
 
-  // ===================== FULL MENU MODAL =====================
-
-const menuButtons = document.querySelectorAll('.view-menu-btn');
 const menuModal = document.getElementById('menu-modal');
 const menuModalClose = document.getElementById('menu-modal-close');
 const menuImage = document.getElementById('menu-image');
 const menuPrev = document.getElementById('menu-prev');
 const menuNext = document.getElementById('menu-next');
-const menuPageLabel = document.getElementById('menu-page-label');
+const menuPageNumber = document.getElementById('menu-page-number');
+
+const menuButtons = document.querySelectorAll('.view-menu-btn');
 
 const menuImages = [
   'assets/menu/menu1.jpeg',
@@ -31,85 +26,72 @@ let currentMenuPage = 0;
 
   function updateMenuImage() {
     menuImage.src = menuImages[currentMenuPage];
-    menuImage.alt = `Coverse Cafe menu page ${currentMenuPage + 1}`;
 
-    menuPageLabel.textContent =
-      `Page ${currentMenuPage + 1} of ${menuImages.length}`;
+    menuImage.alt =
+      `Coverse Cafe menu page ${currentMenuPage + 1}`;
 
-    menuPrev.disabled = currentMenuPage === 0;
-    menuNext.disabled = currentMenuPage === menuImages.length - 1;
-
-    menuPrev.classList.toggle('opacity-40', menuPrev.disabled);
-    menuNext.classList.toggle('opacity-40', menuNext.disabled);
+    menuPageNumber.textContent =
+      `Page ${currentMenuPage + 1} / ${menuImages.length}`;
   }
 
-  function openFullMenu() {
+  function openMenuModal() {
     currentMenuPage = 0;
     updateMenuImage();
 
     menuModal.classList.remove('hidden');
     menuModal.classList.add('flex');
 
-    menuModal.setAttribute('aria-hidden', 'false');
     document.body.classList.add('overflow-hidden');
   }
 
-  function closeFullMenu() {
+  function closeMenuModal() {
     menuModal.classList.add('hidden');
     menuModal.classList.remove('flex');
 
-    menuModal.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('overflow-hidden');
   }
 
-  menuButtons.forEach(button => {
-    button.addEventListener('click', openFullMenu);
+  menuButtons.forEach((button) => {
+    button.addEventListener('click', openMenuModal);
   });
 
-  menuModalClose.addEventListener('click', closeFullMenu);
-
-  menuPrev.addEventListener('click', () => {
-    if (currentMenuPage > 0) {
-      currentMenuPage--;
-      updateMenuImage();
-    }
-  });
+  menuModalClose.addEventListener('click', closeMenuModal);
 
   menuNext.addEventListener('click', () => {
-    if (currentMenuPage < menuImages.length - 1) {
-      currentMenuPage++;
-      updateMenuImage();
+    currentMenuPage =
+      (currentMenuPage + 1) % menuImages.length;
+
+    updateMenuImage();
+  });
+
+  menuPrev.addEventListener('click', () => {
+    currentMenuPage =
+      (currentMenuPage - 1 + menuImages.length) %
+      menuImages.length;
+
+    updateMenuImage();
+  });
+
+  menuModal.addEventListener('click', (event) => {
+    if (event.target === menuModal) {
+      closeMenuModal();
     }
   });
 
-  // Close when clicking the dark area outside the menu
-  menuModal.addEventListener('click', (e) => {
-    if (e.target === menuModal) {
-      closeFullMenu();
-    }
-  });
-
-  // Keyboard support
-  document.addEventListener('keydown', (e) => {
-    if (menuModal.classList.contains('hidden')) return;
-
-    if (e.key === 'Escape') {
-      closeFullMenu();
-    }
-
-    if (e.key === 'ArrowLeft' && currentMenuPage > 0) {
-      currentMenuPage--;
-      updateMenuImage();
-    }
-
+  document.addEventListener('keydown', (event) => {
     if (
-      e.key === 'ArrowRight' &&
-      currentMenuPage < menuImages.length - 1
+      event.key === 'Escape' &&
+      !menuModal.classList.contains('hidden')
     ) {
-      currentMenuPage++;
-      updateMenuImage();
+      closeMenuModal();
     }
   });
+
+  // Mobile sidebar menu: open/close via toggle, close button, overlay click, or Escape
+  const menuToggle = document.getElementById('menu-toggle');
+  const menuClose = document.getElementById('menu-close');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const menuOverlay = document.getElementById('menu-overlay');
 
   function openMenu() {
     mobileMenu.classList.remove('translate-x-full');
@@ -223,4 +205,48 @@ let currentMenuPage = 0;
     submitBtn.disabled = false;
     submitBtn.classList.remove('opacity-70');
   }
+});
+
+const themeToggle = document.getElementById('theme-toggle');
+const moonIcon = document.getElementById('moon-icon');
+const sunIcon = document.getElementById('sun-icon');
+
+function updateThemeIcons() {
+  const isDark = document.documentElement.classList.contains('dark');
+
+  if (isDark) {
+    moonIcon.classList.add('hidden');
+    sunIcon.classList.remove('hidden');
+  } else {
+    moonIcon.classList.remove('hidden');
+    sunIcon.classList.add('hidden');
+  }
+}
+
+// Load saved preference
+const savedTheme = localStorage.getItem('theme');
+
+if (savedTheme === 'dark') {
+  document.documentElement.classList.add('dark');
+} else if (savedTheme === 'light') {
+  document.documentElement.classList.remove('dark');
+} else {
+  // Use system preference if user has not chosen yet
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  if (prefersDark) {
+    document.documentElement.classList.add('dark');
+  }
+}
+
+updateThemeIcons();
+
+themeToggle.addEventListener('click', () => {
+  document.documentElement.classList.toggle('dark');
+
+  const isDark = document.documentElement.classList.contains('dark');
+
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+
+  updateThemeIcons();
 });

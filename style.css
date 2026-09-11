@@ -1,12 +1,25 @@
  html { scroll-behavior: smooth; }
-  body { font-family: 'Inter', sans-serif; background-color: #F5EBDD; color: #2C1B12; }
-  h1, h2, h3, .font-display { font-family: 'Poppins', sans-serif; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #F4E9DC;
+    color: #3A243B;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: 'Playfair Display', serif;
+  }
 
   .bean-divider {
     height: 3px;
     width: 56px;
-    background: #8A9873;
+    background: #7C8465;
     border-radius: 2px;
+  }
+  .dark .bean-divider {
+    background: #A8B08D;
   }
 
   .card-lift {
@@ -14,11 +27,11 @@
   }
   .card-lift:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 28px -10px rgba(44, 27, 18, 0.25);
+    box-shadow: 0 12px 28px -10px rgba(58, 36, 59, 0.22);
   }
 
   .btn-focus:focus-visible {
-    outline: 2px solid #8A9873;
+    outline: 2px solid #7C8465;
     outline-offset: 3px;
   }
 

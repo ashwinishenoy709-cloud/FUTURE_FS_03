@@ -1,0 +1,37 @@
+ html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; background-color: #F5EBDD; color: #2C1B12; }
+  h1, h2, h3, .font-display { font-family: 'Poppins', sans-serif; }
+
+  .bean-divider {
+    height: 3px;
+    width: 56px;
+    background: #8A9873;
+    border-radius: 2px;
+  }
+
+  .card-lift {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .card-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px -10px rgba(44, 27, 18, 0.25);
+  }
+
+  .btn-focus:focus-visible {
+    outline: 2px solid #8A9873;
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .card-lift, #mobile-menu { transition: none; }
+  }
+
+  .fade-slide {
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeSlideIn 0.8s ease forwards;
+  }
+  @keyframes fadeSlideIn {
+    to { opacity: 1; transform: translateY(0); }
+  }

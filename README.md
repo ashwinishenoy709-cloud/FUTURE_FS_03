@@ -11,7 +11,7 @@ This project was developed as part of the **Future Interns Full Stack Web Develo
 ## Live Demo
 
 **Live Website:**  
-https://your-project.vercel.app
+https://coverse-cafe.vercel.app
 
 ---
 
